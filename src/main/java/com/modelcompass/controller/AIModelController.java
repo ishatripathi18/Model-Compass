@@ -2,6 +2,7 @@ package com.modelcompass.controller;
 
 import com.modelcompass.entity.AIModel;
 import com.modelcompass.service.AIModelService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,13 +43,13 @@ public class AIModelController {
     }
 
     @PostMapping
-    public ResponseEntity<AIModel> createModel(@RequestBody AIModel aiModel) {
+    public ResponseEntity<AIModel> createModel(@Valid @RequestBody AIModel aiModel) {
         AIModel createdModel = aiModelService.createModel(aiModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdModel);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AIModel> updateModel(@PathVariable Long id, @RequestBody AIModel aiModel) {
+    public ResponseEntity<AIModel> updateModel(@PathVariable Long id, @Valid @RequestBody AIModel aiModel) {
         AIModel updatedModel = aiModelService.updateModel(id, aiModel);
         return ResponseEntity.ok(updatedModel);
     }

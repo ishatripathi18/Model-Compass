@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "ai_models")
@@ -15,15 +17,19 @@ public class AIModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Name is required")
     @Column(nullable = false)
     private String name;
 
+    @NotBlank(message = "Provider is required")
     @Column(nullable = false)
     private String provider;
 
+    @Size(max = 1000, message = "Description must not exceed 1000 characters")
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @NotBlank(message = "Category is required")
     @Column(nullable = false)
     private String category;
 
