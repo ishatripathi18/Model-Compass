@@ -1,6 +1,7 @@
 package com.modelcompass.service;
 
 import com.modelcompass.entity.AIModel;
+import com.modelcompass.exception.ResourceNotFoundException;
 import com.modelcompass.repository.AIModelRepository;
 import org.springframework.stereotype.Service;
 
@@ -37,12 +38,12 @@ public class AIModelService {
                     existingModel.setCategory(updatedModel.getCategory());
                     return aiModelRepository.save(existingModel);
                 })
-                .orElseThrow(() -> new RuntimeException("AIModel not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("AIModel not found with id: " + id));
     }
 
     public void deleteModel(Long id) {
         if (!aiModelRepository.existsById(id)) {
-            throw new RuntimeException("AIModel not found with id: " + id);
+            throw new ResourceNotFoundException("AIModel not found with id: " + id);
         }
         aiModelRepository.deleteById(id);
     }
