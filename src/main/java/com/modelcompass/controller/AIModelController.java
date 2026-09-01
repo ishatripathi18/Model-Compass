@@ -1,6 +1,7 @@
 package com.modelcompass.controller;
 
-import com.modelcompass.entity.AIModel;
+import com.modelcompass.dto.AIModelRequestDto;
+import com.modelcompass.dto.AIModelResponseDto;
 import com.modelcompass.service.AIModelService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -28,13 +29,13 @@ public class AIModelController {
     }
 
     @GetMapping
-    public List<AIModel> getAllModels() {
+    public List<AIModelResponseDto> getAllModels() {
         return aiModelService.getAllModels();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AIModel> getModelById(@PathVariable Long id) {
-        Optional<AIModel> model = aiModelService.getModelById(id);
+    public ResponseEntity<AIModelResponseDto> getModelById(@PathVariable Long id) {
+        Optional<AIModelResponseDto> model = aiModelService.getModelById(id);
         if (model.isPresent()) {
             return ResponseEntity.ok(model.get());
         } else {
@@ -43,14 +44,14 @@ public class AIModelController {
     }
 
     @PostMapping
-    public ResponseEntity<AIModel> createModel(@Valid @RequestBody AIModel aiModel) {
-        AIModel createdModel = aiModelService.createModel(aiModel);
+    public ResponseEntity<AIModelResponseDto> createModel(@Valid @RequestBody AIModelRequestDto requestDto) {
+        AIModelResponseDto createdModel = aiModelService.createModel(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdModel);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AIModel> updateModel(@PathVariable Long id, @Valid @RequestBody AIModel aiModel) {
-        AIModel updatedModel = aiModelService.updateModel(id, aiModel);
+    public ResponseEntity<AIModelResponseDto> updateModel(@PathVariable Long id, @Valid @RequestBody AIModelRequestDto requestDto) {
+        AIModelResponseDto updatedModel = aiModelService.updateModel(id, requestDto);
         return ResponseEntity.ok(updatedModel);
     }
 

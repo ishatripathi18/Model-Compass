@@ -1,49 +1,30 @@
-package com.modelcompass.entity;
+package com.modelcompass.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-@Entity
-@Table(name = "ai_models")
-public class AIModel {
+public class AIModelRequestDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
+    @NotBlank(message = "Name is required")
     private String name;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Provider is required")
     private String provider;
 
-    @Column(columnDefinition = "TEXT")
+    @Size(max = 1000, message = "Description must not exceed 1000 characters")
     private String description;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Category is required")
     private String category;
 
-    public AIModel() {
+    public AIModelRequestDto() {
     }
 
-    public AIModel(Long id, String name, String provider, String description, String category) {
-        this.id = id;
+    public AIModelRequestDto(String name, String provider, String description, String category) {
         this.name = name;
         this.provider = provider;
         this.description = description;
         this.category = category;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

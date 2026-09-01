@@ -1,5 +1,8 @@
 package com.modelcompass.service;
 
+import com.modelcompass.dto.AIModelMapper;
+import com.modelcompass.dto.AIModelRequestDto;
+import com.modelcompass.dto.AIModelResponseDto;
 import com.modelcompass.entity.AIModel;
 import com.modelcompass.exception.ResourceNotFoundException;
 import com.modelcompass.repository.AIModelRepository;
@@ -7,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AIModelService {
@@ -17,26 +21,29 @@ public class AIModelService {
         this.aiModelRepository = aiModelRepository;
     }
 
-    public List<AIModel> getAllModels() {
-        return aiModelRepository.findAll();
+    public List<AIModelResponseDto> getAllModels() {
+        return aiModelRepository.findAll().stream()
+                .map(AIModelMapper::toResponseDto)
+                .collect(Collectors.toList());
     }
 
-    public Optional<AIModel> getModelById(Long id) {
-        return aiModelRepository.findById(id);
+    public Optional<AIModelResponseDto> getModelById(Long id) {
+        return aiModelRepository.findById(id)
+                .map(AIModelMapper::toResponseDto);
     }
 
-    public AIModel createModel(AIModel aiModel) {
-        return aiModelRepository.save(aiModel);
+    public AIModelResponseDto createModel(AIModelRequestDto requestDto) {
+        AIModel aiModel = AIModelMapper.toEntity(requestDto);
+        AIModel savedModel = aiModelRepository.save(aiModel);
+        return AIModelMapper.toResponseDto(savedModel);
     }
 
-    public AIModel updateModel(Long id, AIModel updatedModel) {
+    public AIModelResponseDto updateModel(Long id, AIModelRequestDto requestDto) {
         return aiModelRepository.findById(id)
                 .map(existingModel -> {
-                    existingModel.setName(updatedModel.getName());
-                    existingModel.setProvider(updatedModel.getProvider());
-                    existingModel.setDescription(updatedModel.getDescription());
-                    existingModel.setCategory(updatedModel.getCategory());
-                    return aiModelRepository.save(existingModel);
+                    AIModelMapper.updateEntityFromDto(existingModel, requestDto);
+                    AIModel savedModel = aiModelRepository.save(existingModel);
+                    return AIModelMapper.toResponseDto(savedModel);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("AIModel not found with id: " + id));
     }
