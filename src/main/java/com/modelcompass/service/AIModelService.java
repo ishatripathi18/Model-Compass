@@ -3,6 +3,7 @@ package com.modelcompass.service;
 import com.modelcompass.dto.AIModelMapper;
 import com.modelcompass.dto.AIModelRequestDto;
 import com.modelcompass.dto.AIModelResponseDto;
+import com.modelcompass.dto.ComparisonResponseDto;
 import com.modelcompass.entity.AIModel;
 import com.modelcompass.exception.ResourceNotFoundException;
 import com.modelcompass.repository.AIModelRepository;
@@ -67,5 +68,16 @@ public class AIModelService {
             throw new ResourceNotFoundException("AIModel not found with id: " + id);
         }
         aiModelRepository.deleteById(id);
+    }
+
+    public ComparisonResponseDto compareModels(List<Long> modelIds) {
+        List<AIModel> models = aiModelRepository.findAllById(modelIds);
+        if (models.isEmpty()) {
+            throw new ResourceNotFoundException("No models found for the provided IDs");
+        }
+        List<AIModelResponseDto> modelDtos = models.stream()
+                .map(AIModelMapper::toResponseDto)
+                .collect(Collectors.toList());
+        return new ComparisonResponseDto(modelDtos.size(), modelDtos);
     }
 }

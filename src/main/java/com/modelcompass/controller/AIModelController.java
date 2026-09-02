@@ -2,6 +2,8 @@ package com.modelcompass.controller;
 
 import com.modelcompass.dto.AIModelRequestDto;
 import com.modelcompass.dto.AIModelResponseDto;
+import com.modelcompass.dto.ComparisonRequestDto;
+import com.modelcompass.dto.ComparisonResponseDto;
 import com.modelcompass.service.AIModelService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -64,5 +66,11 @@ public class AIModelController {
     public ResponseEntity<Void> deleteModel(@PathVariable Long id) {
         aiModelService.deleteModel(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/compare")
+    public ResponseEntity<ComparisonResponseDto> compareModels(@Valid @RequestBody ComparisonRequestDto requestDto) {
+        ComparisonResponseDto responseDto = aiModelService.compareModels(requestDto.getModelIds());
+        return ResponseEntity.ok(responseDto);
     }
 }
