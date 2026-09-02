@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -29,8 +30,12 @@ public class AIModelController {
     }
 
     @GetMapping
-    public List<AIModelResponseDto> getAllModels() {
-        return aiModelService.getAllModels();
+    public List<AIModelResponseDto> getModels(
+            @RequestParam(required = false) String provider,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String search
+    ) {
+        return aiModelService.getModels(provider, category, search);
     }
 
     @GetMapping("/{id}")

@@ -21,8 +21,22 @@ public class AIModelService {
         this.aiModelRepository = aiModelRepository;
     }
 
-    public List<AIModelResponseDto> getAllModels() {
-        return aiModelRepository.findAll().stream()
+    public List<AIModelResponseDto> getModels(String provider, String category, String search) {
+        List<AIModel> models;
+
+        if (search != null && !search.trim().isEmpty()) {
+            models = aiModelRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(search, search);
+        } else if (provider != null && category != null) {
+            models = aiModelRepository.findByProviderIgnoreCaseAndCategoryIgnoreCase(provider, category);
+        } else if (provider != null) {
+            models = aiModelRepository.findByProviderIgnoreCase(provider);
+        } else if (category != null) {
+            models = aiModelRepository.findByCategoryIgnoreCase(category);
+        } else {
+            models = aiModelRepository.findAll();
+        }
+
+        return models.stream()
                 .map(AIModelMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
