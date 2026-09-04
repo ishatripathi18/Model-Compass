@@ -4,6 +4,8 @@ import com.modelcompass.dto.AIModelRequestDto;
 import com.modelcompass.dto.AIModelResponseDto;
 import com.modelcompass.dto.ComparisonRequestDto;
 import com.modelcompass.dto.ComparisonResponseDto;
+import com.modelcompass.dto.RecommendationRequestDto;
+import com.modelcompass.dto.RecommendationResponseDto;
 import com.modelcompass.service.AIModelService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -72,5 +74,11 @@ public class AIModelController {
     public ResponseEntity<ComparisonResponseDto> compareModels(@Valid @RequestBody ComparisonRequestDto requestDto) {
         ComparisonResponseDto responseDto = aiModelService.compareModels(requestDto.getModelIds());
         return ResponseEntity.ok(responseDto);
+    }
+
+    @PostMapping("/recommend")
+    public ResponseEntity<List<RecommendationResponseDto>> recommendModels(@Valid @RequestBody RecommendationRequestDto requestDto) {
+        List<RecommendationResponseDto> recommendations = aiModelService.recommendModels(requestDto);
+        return ResponseEntity.ok(recommendations);
     }
 }
