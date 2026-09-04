@@ -42,6 +42,14 @@ public class AIModelController {
         return aiModelService.getModels(provider, category, search);
     }
 
+    @GetMapping("/paginated")
+    public ResponseEntity<org.springframework.data.domain.Page<AIModelResponseDto>> getModelsPaginated(
+            @org.springframework.data.web.PageableDefault(page = 0, size = 10, sort = "id", direction = org.springframework.data.domain.Sort.Direction.ASC)
+            org.springframework.data.domain.Pageable pageable
+    ) {
+        return ResponseEntity.ok(aiModelService.getModelsPaginated(pageable));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<AIModelResponseDto> getModelById(@PathVariable Long id) {
         Optional<AIModelResponseDto> model = aiModelService.getModelById(id);

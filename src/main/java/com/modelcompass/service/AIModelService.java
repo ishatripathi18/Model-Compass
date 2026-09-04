@@ -9,6 +9,8 @@ import com.modelcompass.dto.RecommendationResponseDto;
 import com.modelcompass.entity.AIModel;
 import com.modelcompass.exception.ResourceNotFoundException;
 import com.modelcompass.repository.AIModelRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -44,6 +46,11 @@ public class AIModelService {
         return models.stream()
                 .map(AIModelMapper::toResponseDto)
                 .collect(Collectors.toList());
+    }
+
+    public Page<AIModelResponseDto> getModelsPaginated(Pageable pageable) {
+        return aiModelRepository.findAll(pageable)
+                .map(AIModelMapper::toResponseDto);
     }
 
     public Optional<AIModelResponseDto> getModelById(Long id) {
