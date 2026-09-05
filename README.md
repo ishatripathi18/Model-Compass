@@ -5,6 +5,7 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-blue?logo=postgresql)](https://www.postgresql.org/)
 [![OpenAPI](https://img.shields.io/badge/OpenAPI%203-Swagger%20UI-green?logo=swagger)](https://swagger.io/)
 [![Build & Test](https://img.shields.io/badge/Tests-JUnit%205%20%7C%20Mockito%20%7C%20MockMvc-success)]()
+[![CI Pipeline](https://github.com/ishatripathi18/Model-Compass/actions/workflows/ci.yml/badge.svg)](https://github.com/ishatripathi18/Model-Compass/actions/workflows/ci.yml)
 
 An enterprise-ready Spring Boot RESTful API engineered to catalog, evaluate, filter, and recommend Artificial Intelligence models (LLMs, Vision, Code generation, Multimodal) using a multi-attribute rule-based scoring engine and side-by-side comparison capabilities.
 
